@@ -4,7 +4,6 @@ Compose is a tool for defining and running complex applications with Docker. Wit
 
 More information on the official Docker documentation : https://docs.docker.com/compose/
 
-[![CircleCi Build Status](https://circleci.com/gh/dduportal-dockerfiles/docker-compose.svg?&style=shield)](https://circleci.com/gh/dduportal-dockerfiles/docker-compose)
 
 ## How do you use this image ? ##
 
@@ -17,7 +16,7 @@ $ docker run -v "$(pwd)":/app \
              -v /var/run/docker.sock:/var/run/docker.sock \
              -e COMPOSE_PROJECT_NAME=$(basename "$(pwd)") \
              -ti --rm \
-             dduportal/docker-compose:latest --help
+             rastermedia/docker-compose:latest --help
 ```
 
 **Customize the Docker socket**
@@ -30,17 +29,17 @@ $ docker run -v "$(pwd)":/app \
              -e DOCKER_HOST=tcp://10.0.2.15:2375 \
              -e COMPOSE_PROJECT_NAME=$(basename "$(pwd)") \
              --rm \
-             dduportal/docker-compose:latest up -d
+             rastermedia/docker-compose:latest up -d
 ```
 
-On Windows when using the Boot2Docker provided MSYS shell, you should add ```/``` before each of the host paths passed to ```-v```, to help the path conversion [(courtesy of @joostfarla)](https://github.com/dduportal-dockerfiles/docker-compose/issues/1#issuecomment-99464292) :
+On Windows when using the Boot2Docker provided MSYS shell, you should add ```/``` before each of the host paths passed to ```-v```, to help the path conversion :
 
 ```bash
 $ docker run -v "/$(pwd)":/app \
              -v //var/run/docker.sock:/var/run/docker.sock \
              -e COMPOSE_PROJECT_NAME=$(basename "/$(pwd)") \
              -ti --rm \
-             dduportal/docker-compose:latest
+             rastermedia/docker-compose:latest
 ```
 
 Note: On Windows, if you are using MSYS **v2** or Cygwin (where ```pwd``` in the home directory returns /home/Foo, rather than /c/Users/Foo), you'll also need to replace ```$(pwd)``` with ```$(pwd | sed s_/home_/c/Users_)```, so the correct directory is mounted.
@@ -50,7 +49,7 @@ Note: On Windows, if you are using MSYS **v2** or Cygwin (where ```pwd``` in the
 If you don't want to repeat yourself by typing all the options each time, just add an alias (interactive or in your .profile/.ashrc/etc :
 
 ```bash
-    echo 'alias docker-compose="docker run -v \"\$(pwd)\":/app -v /var/run/docker.sock:/var/run/docker.sock -e COMPOSE_PROJECT_NAME=\$(basename \"\$(pwd)\") -ti --rm dduportal/docker-compose:latest"' \
+    echo 'alias docker-compose="docker run -v \"\$(pwd)\":/app -v /var/run/docker.sock:/var/run/docker.sock -e COMPOSE_PROJECT_NAME=\$(basename \"\$(pwd)\") -ti --rm rastermedia/docker-compose:latest"' \
     >> ~/.ashrc
 ```
 
@@ -58,7 +57,7 @@ If you don't want to repeat yourself by typing all the options each time, just a
 
 If the image doesn't fit your needs "as it", you can customize it using your own Dockerfile, for example :
 
-    FROM dduportal/docker-compose:latest
+    FROM rastermedia/docker-compose:latest
     MAINTAINER your.mail@here
     
     ADD . /app/ # your docker-compose.yml can be copied inside the image
@@ -85,15 +84,7 @@ The idea is to provide a full "host point of view path" for the volume to mount,
 
 ## Contributing
 
-Do not hesitate to contribute by forking this repository
+Contributions should go to:
+https://github.com/dduportal/dockerfiles
 
-Pick at least one :
-
-* Implement tests in ```/tests/bats/```
-
-* Write the Dockerfile
-
-* (Re)Write the documentation corrections
-
-
-Finally, open the Pull Request : CircleCi will automatically build and test for you
+This is a fork because the Alpine distro they use doesn't properly read files. 
